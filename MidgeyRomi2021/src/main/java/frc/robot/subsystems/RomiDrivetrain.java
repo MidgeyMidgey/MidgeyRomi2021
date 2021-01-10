@@ -27,12 +27,6 @@ public class RomiDrivetrain extends SubsystemBase {
     resetEncoders();
   }
 
-  /*
-  public void arcadeDrive(double xaxisSpeed, double zaxisRotate) {
-    m_diffDrive.arcadeDrive(xaxisSpeed, zaxisRotate);
-  }
-  */
-
   public void tankDrive(double leftSpeed, double rightSpeed) {
     m_diffDrive.tankDrive(leftSpeed, -rightSpeed);
   }

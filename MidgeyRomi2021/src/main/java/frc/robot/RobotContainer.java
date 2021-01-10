@@ -4,17 +4,17 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.RomiDrivetrain;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.tankDriveCommand;
+import frc.robot.sensors.RomiGyro;
 
 public class RobotContainer {
   final RomiDrivetrain m_romiDrivetrain = new RomiDrivetrain();
+  final RomiGyro m_rRomiGyro = new RomiGyro();
   final ExampleCommand m_autoCommand = new ExampleCommand(m_romiDrivetrain);
   final XboxController m_controller = new XboxController(0);
 
@@ -37,5 +37,8 @@ public class RobotContainer {
   public void setSmartDashboard(){
     SmartDashboard.putNumber("Left Encoder", m_romiDrivetrain.getLeftDistanceInch());
     SmartDashboard.putNumber("Right Encoder", m_romiDrivetrain.getRightDistanceInch());
+    SmartDashboard.putNumber("Angle X", m_rRomiGyro.getAngleX());
+    SmartDashboard.putNumber("Angle Y", m_rRomiGyro.getAngleY());
+    SmartDashboard.putNumber("Angle Z", m_rRomiGyro.getAngleZ());
   }
 }
