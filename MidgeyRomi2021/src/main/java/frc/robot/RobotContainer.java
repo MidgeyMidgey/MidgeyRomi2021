@@ -40,8 +40,8 @@ public class RobotContainer {
     //SmartDashboard.putNumber("Angle X", m_romiGyro.getAngleX());
     //SmartDashboard.putNumber("Angle Y", m_romiGyro.getAngleY());
     //SmartDashboard.putNumber("Angle Z", m_romiGyro.getAngleZ());
-    SmartDashboard.putNumber("key", m_romiDrivetrain.getAccelX());
-    SmartDashboard.putNumber("key", m_romiDrivetrain.getAccelY());
-    SmartDashboard.putNumber("key", m_romiDrivetrain.getAccelZ());
+    SmartDashboard.putNumber("AccelX", m_romiDrivetrain.getAccelX());
+    SmartDashboard.putNumber("AccelY", m_romiDrivetrain.getAccelY());
+    SmartDashboard.putNumber("AccelZ", m_romiDrivetrain.getAccelZ());
   }
 }
