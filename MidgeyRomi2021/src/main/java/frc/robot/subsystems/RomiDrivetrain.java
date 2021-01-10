@@ -34,7 +34,7 @@ public class RomiDrivetrain extends SubsystemBase {
   */
 
   public void tankDrive(double leftSpeed, double rightSpeed) {
-    m_diffDrive.arcadeDrive(leftSpeed, rightSpeed);
+    m_diffDrive.tankDrive(leftSpeed, -rightSpeed);
   }
 
   public void resetEncoders() {
