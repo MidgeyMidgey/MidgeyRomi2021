@@ -15,7 +15,7 @@ import frc.robot.commands.turnToAngleCommand;
 import frc.robot.sensors.RomiGyro;
 
 public class RobotContainer {
-  final RomiDrivetrain m_romiDrivetrain = new RomiDrivetrain();
+  public final static RomiDrivetrain m_romiDrivetrain = new RomiDrivetrain();
   public final static RomiGyro m_romiGyro = new RomiGyro();
   final XboxController m_controller = new XboxController(0);
 

@@ -8,6 +8,8 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.sensors.RomiGyro;
 import frc.robot.RobotContainer;
+import frc.robot.subsystems.RomiDrivetrain;
+import edu.wpi.first.wpiutil.math.MathUtil;
 
 public class turnToAngleCommand extends CommandBase {
 
@@ -20,7 +22,7 @@ public class turnToAngleCommand extends CommandBase {
 
   @Override
   public void initialize() {
-
+    RobotContainer.m_romiGyro.reset();
   }
 
   @Override
@@ -33,6 +35,7 @@ public class turnToAngleCommand extends CommandBase {
       leftSpeed = - Constants.K_TURN;
       rightSpeed = Constants.K_TURN;
     }
+    RobotContainer.m_romiDrivetrain.tankDrive(leftSpeed, rightSpeed);
   }
 
   @Override
@@ -41,6 +44,7 @@ public class turnToAngleCommand extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    return false;
+    return (Math.abs(RobotContainer.m_romiGyro.getAngleZ() - Constants.TARGET_ANGLE) > 5);
+      
   }
 }
