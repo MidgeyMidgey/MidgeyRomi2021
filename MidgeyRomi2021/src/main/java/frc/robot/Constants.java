@@ -5,6 +5,6 @@
 package frc.robot;
 
 public final class Constants {
-    public static final double K_TURN = 0.10;
-    public static final double TARGET_ANGLE = 90.0;
+    public static final double K_TURN = 0.75;
+    public static final double TARGET_ANGLE = 45.0;
 }

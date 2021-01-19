@@ -17,7 +17,7 @@ public class turnToAngleCommand extends CommandBase {
   double rightSpeed = 0;
 
   public turnToAngleCommand() {
-    
+    System.out.println("**** IN TURN");
   }
 
   @Override
@@ -35,7 +35,9 @@ public class turnToAngleCommand extends CommandBase {
       leftSpeed = - Constants.K_TURN;
       rightSpeed = Constants.K_TURN;
     }
-    RobotContainer.m_romiDrivetrain.tankDrive(leftSpeed, rightSpeed);
+    System.out.println(leftSpeed);
+    System.out.println(rightSpeed);
+    RobotContainer.m_romiDrivetrain.tankDrive(leftSpeed, -rightSpeed);
   }
 
   @Override
@@ -44,7 +46,7 @@ public class turnToAngleCommand extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    return (Math.abs(RobotContainer.m_romiGyro.getAngleZ() - Constants.TARGET_ANGLE) > 5);
+    return (Math.abs(RobotContainer.m_romiGyro.getAngleZ()) > Constants.TARGET_ANGLE);
       
   }
 }

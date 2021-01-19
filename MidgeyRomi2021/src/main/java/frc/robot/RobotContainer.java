@@ -39,7 +39,7 @@ public class RobotContainer {
     m_romiDrivetrain.setDefaultCommand(getTankDriveCommand());
 
     JoystickButton turnToAngleCommandButton = new JoystickButton(m_controller, A_BUTTON_XBOX);
-    turnToAngleCommandButton.whileHeld(new turnToAngleCommand());
+    turnToAngleCommandButton.whenPressed(new turnToAngleCommand());
   }
 
   /*
