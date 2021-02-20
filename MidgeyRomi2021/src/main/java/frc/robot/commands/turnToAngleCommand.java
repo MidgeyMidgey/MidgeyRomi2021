@@ -35,13 +35,15 @@ public class turnToAngleCommand extends CommandBase {
   @Override
   public void execute() {
     double currentAngle = RobotContainer.m_romiGyro.getAngleZ();
-
+    double delta = Math.abs(Constants.TARGET_ANGLE - currentAngle);
+    delta = delta * 0.01 + 0.26;
+    delta = Math.min(delta, Constants.K_TURN);
     if (currentAngle > Constants.TARGET_ANGLE) {
-      leftSpeed = Constants.K_TURN;
-      rightSpeed = - Constants.K_TURN;
+      leftSpeed = delta;
+      rightSpeed = - delta;
     } else {
-      leftSpeed = - Constants.K_TURN;
-      rightSpeed = Constants.K_TURN;
+      leftSpeed = - delta;
+      rightSpeed = delta;
     }
     delta_count++;
     delta_sum += currentAngle - lastAngle;
@@ -60,7 +62,7 @@ public class turnToAngleCommand extends CommandBase {
   @Override
   public boolean isFinished() {
     double theta = RobotContainer.m_romiGyro.getAngleZ();
-    boolean isDone = theta > 0.98 * Constants.TARGET_ANGLE;
+    boolean isDone = Math.abs(Constants.TARGET_ANGLE - theta) < 0.7;
     if (isDone) {
       System.out.println("**** At angle");
       System.out.println(theta);
