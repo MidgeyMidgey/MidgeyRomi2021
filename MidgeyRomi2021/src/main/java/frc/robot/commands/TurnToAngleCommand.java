@@ -11,7 +11,7 @@ import frc.robot.RobotContainer;
 import frc.robot.subsystems.RomiDrivetrain;
 import edu.wpi.first.wpiutil.math.MathUtil;
 
-public class turnToAngleCommand extends CommandBase {
+public class TurnToAngleCommand extends CommandBase {
 
   double leftSpeed = 0;
   double rightSpeed = 0;
@@ -21,7 +21,7 @@ public class turnToAngleCommand extends CommandBase {
   double delta_sum = 0;
   int delta_count = 0;
 
-  public turnToAngleCommand() {
+  public TurnToAngleCommand() {
     System.out.println("**** IN TURN");
   }
 

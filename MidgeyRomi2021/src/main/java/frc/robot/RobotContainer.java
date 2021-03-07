@@ -10,8 +10,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.RomiDrivetrain;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.tankDriveCommand;
-import frc.robot.commands.turnToAngleCommand;
+import frc.robot.commands.TankDriveCommand;
+import frc.robot.commands.TurnToAngleCommand;
 import frc.robot.sensors.RomiGyro;
 
 public class RobotContainer {
@@ -29,7 +29,6 @@ public class RobotContainer {
   private static final int START_ARROW = 8;
   private static final int JOYSTICK_LEFT_CLICK = 9;
   private static final int JOYSTICK_RIGHT_CLICK = 10;
-  
 
   public RobotContainer() {
     configureButtonBindings();
@@ -39,7 +38,7 @@ public class RobotContainer {
     m_romiDrivetrain.setDefaultCommand(getTankDriveCommand());
 
     JoystickButton turnToAngleCommandButton = new JoystickButton(m_controller, X_BUTTON_XBOX);
-    turnToAngleCommandButton.whenPressed(new turnToAngleCommand());
+    turnToAngleCommandButton.whenPressed(new TurnToAngleCommand());
   }
 
   /*
@@ -49,7 +48,7 @@ public class RobotContainer {
   */
 
   public Command getTankDriveCommand(){
-    return new tankDriveCommand(m_romiDrivetrain, () -> -m_controller.getRawAxis(1), () -> m_controller.getRawAxis(5));
+    return new TankDriveCommand(m_romiDrivetrain, () -> -m_controller.getRawAxis(1), () -> m_controller.getRawAxis(5));
   }
 
   public void setSmartDashboard(){
