@@ -6,13 +6,11 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
-import frc.robot.sensors.RomiGyro;
-import frc.robot.RobotContainer;
 import frc.robot.subsystems.RomiDrivetrain;
 import edu.wpi.first.wpiutil.math.MathUtil;
 
 public class TurnToAngleCommand extends CommandBase {
-
+  RomiDrivetrain m_drive;
   double leftSpeed = 0;
   double rightSpeed = 0;
 
@@ -21,20 +19,21 @@ public class TurnToAngleCommand extends CommandBase {
   double delta_sum = 0;
   int delta_count = 0;
 
-  public TurnToAngleCommand() {
+  public TurnToAngleCommand(RomiDrivetrain drive) {
+    m_drive = drive;
     System.out.println("**** IN TURN");
   }
 
   @Override
   public void initialize() {
-    RobotContainer.m_romiGyro.reset();
+    m_drive.resetGyro();
     lastAngle = 0.0;
     System.out.println("**** RESET");
   }
 
   @Override
   public void execute() {
-    double currentAngle = RobotContainer.m_romiGyro.getAngleZ();
+    double currentAngle = m_drive.getAngleZ();
     double delta = Math.abs(Constants.TARGET_ANGLE - currentAngle);
     delta = delta * 0.01 + 0.26;
     delta = Math.min(delta, Constants.K_TURN);
@@ -48,20 +47,19 @@ public class TurnToAngleCommand extends CommandBase {
     delta_count++;
     delta_sum += currentAngle - lastAngle;
     lastAngle = currentAngle;
-    RobotContainer.m_romiDrivetrain.tankDrive(-leftSpeed, rightSpeed);
+    m_drive.tankDrive(-leftSpeed, rightSpeed);
   }
 
   @Override
   public void end(boolean interrupted) {
-    RobotContainer.m_romiDrivetrain.tankDrive(0, 0);
+    m_drive.tankDrive(0, 0);
     System.out.println("**** DONE TURN");
     System.out.println(delta_count/delta_sum);
-    System.out.println(RobotContainer.m_romiGyro.getAngleZ());
   }
 
   @Override
   public boolean isFinished() {
-    double theta = RobotContainer.m_romiGyro.getAngleZ();
+    double theta = m_drive.getAngleZ();
     boolean isDone = Math.abs(Constants.TARGET_ANGLE - theta) < 0.7;
     if (isDone) {
       System.out.println("**** At angle");

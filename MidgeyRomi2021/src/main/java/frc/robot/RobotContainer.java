@@ -12,11 +12,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.TankDriveCommand;
 import frc.robot.commands.TurnToAngleCommand;
-import frc.robot.sensors.RomiGyro;
 
 public class RobotContainer {
   public final static RomiDrivetrain m_romiDrivetrain = new RomiDrivetrain();
-  public final static RomiGyro m_romiGyro = new RomiGyro();
   final XboxController m_controller = new XboxController(0);
 
   private static final int A_BUTTON_XBOX = 1;
@@ -38,7 +36,7 @@ public class RobotContainer {
     m_romiDrivetrain.setDefaultCommand(getTankDriveCommand());
 
     JoystickButton turnToAngleCommandButton = new JoystickButton(m_controller, X_BUTTON_XBOX);
-    turnToAngleCommandButton.whenPressed(new TurnToAngleCommand());
+    turnToAngleCommandButton.whenPressed(new TurnToAngleCommand(m_romiDrivetrain));
   }
 
   /*
@@ -54,11 +52,5 @@ public class RobotContainer {
   public void setSmartDashboard(){
     SmartDashboard.putNumber("Left Encoder", m_romiDrivetrain.getLeftDistanceInch());
     SmartDashboard.putNumber("Right Encoder", m_romiDrivetrain.getRightDistanceInch());
-    SmartDashboard.putNumber("Angle X", m_romiGyro.getAngleX());
-    SmartDashboard.putNumber("Angle Y", m_romiGyro.getAngleY());
-    SmartDashboard.putNumber("Angle Z", m_romiGyro.getAngleZ());
-    //SmartDashboard.putNumber("AccelX", m_romiDrivetrain.getAccelX());
-    //SmartDashboard.putNumber("AccelY", m_romiDrivetrain.getAccelY());
-    //SmartDashboard.putNumber("AccelZ", m_romiDrivetrain.getAccelZ());
   }
 }
