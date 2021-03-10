@@ -9,22 +9,40 @@ import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.BuiltInAccelerometer;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.sensors.RomiGyro;
+import frc.robot.RobotContainer;
 
 public class RomiDrivetrain extends SubsystemBase {
-  private static final double kCountsPerRevolution = 1440.0;
+  private static final double kCountsPerRevolution = 1440.0; // 12 per turn at 120:1 gearing
   private static final double kWheelDiameterInch = 2.75591; // 70 mm
+    
   private final Spark m_leftMotor = new Spark(0);
   private final Spark m_rightMotor = new Spark(1);
   private final Encoder m_leftEncoder = new Encoder(4, 5);
   private final Encoder m_rightEncoder = new Encoder(6, 7);
   private final DifferentialDrive m_diffDrive = new DifferentialDrive(m_leftMotor, m_rightMotor);
+
+  public final static RomiGyro m_romiGyro = new RomiGyro();
   private final BuiltInAccelerometer m_accelerometer = new BuiltInAccelerometer();
+
+  // odometry must be set up after encoder/gyro reset
+  private DifferentialDriveOdometry m_odometry;
+
+  // Display odometry
+  private Field2d m_field = new Field2d();
 
   public RomiDrivetrain() {
     m_leftEncoder.setDistancePerPulse((Math.PI * kWheelDiameterInch) / kCountsPerRevolution);
     m_rightEncoder.setDistancePerPulse((Math.PI * kWheelDiameterInch) / kCountsPerRevolution);
     resetEncoders();
+    resetGyro();
+    m_odometry = new DifferentialDriveOdometry(m_romiGyro.getRotation2d());
+    SmartDashboard.putData("Field", m_field);
   }
 
   public void tankDrive(double leftSpeed, double rightSpeed) {
@@ -56,8 +74,27 @@ public class RomiDrivetrain extends SubsystemBase {
     return m_accelerometer.getZ();
   }
 
+  public double getAngleZ() {
+    return m_romiGyro.getAngleZ();
+  }
+
+  public Rotation2d getRotation2d() {
+    return m_romiGyro.getRotation2d();
+  }
+  /** Reset the gyro. */
+  public void resetGyro() {
+    m_romiGyro.reset();
+  }
+
+
   @Override
   public void periodic() {
+    // This method will be called once per scheduler run
+    m_odometry.update(m_romiGyro.getRotation2d(),
+		      m_leftEncoder.getDistance(),
+		      m_rightEncoder.getDistance());
+    m_field.setRobotPose(m_odometry.getPoseMeters());
+    SmartDashboard.putNumber("Angle Z", m_romiGyro.getAngleZ());
   }
 
   @Override

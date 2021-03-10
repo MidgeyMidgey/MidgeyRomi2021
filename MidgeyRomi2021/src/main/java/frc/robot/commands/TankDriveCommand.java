@@ -9,12 +9,12 @@ import frc.robot.subsystems.RomiDrivetrain;
 import java.util.function.Supplier;
 
 //This is basically just a rehashing of arcadeDrive, just with variables that make sense to me for tankDrive
-public class tankDriveCommand extends CommandBase {
+public class TankDriveCommand extends CommandBase {
   private final RomiDrivetrain m_romiDrivetrain;
   private final Supplier<Double> m_leftSpeedSupplier;
   private final Supplier<Double> m_rightSpeedSupplier;
   
-  public tankDriveCommand(RomiDrivetrain romiDrivetrain, Supplier<Double> leftSpeedSupplier, Supplier<Double> rightSpeedSupplier) {
+  public TankDriveCommand(RomiDrivetrain romiDrivetrain, Supplier<Double> leftSpeedSupplier, Supplier<Double> rightSpeedSupplier) {
     m_romiDrivetrain = romiDrivetrain;
     m_leftSpeedSupplier = leftSpeedSupplier;
     m_rightSpeedSupplier = rightSpeedSupplier;
