@@ -8,9 +8,10 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.AutoBaselineCommand;
 
 public class Robot extends TimedRobot {
-  private Command m_autonomousCommand;
+  private Command m_autoCommand;
   private RobotContainer m_robotContainer;
 
   @Override
@@ -18,6 +19,10 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
   }
 
+  public Command getAutoCommand(){
+    return new AutoBaselineCommand(m_robotContainer.m_romiDrivetrain, m_robotContainer.m_limelight);
+  }
+    
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
@@ -31,8 +36,11 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.schedule();
+    m_autoCommand = getAutoCommand();
+    System.out.println(m_autoCommand.toString());
+    if(m_autoCommand != null){
+      m_autoCommand.schedule();
+      SmartDashboard.putString("temp1", "Auto init working");
     }
   }
 
@@ -41,8 +49,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.cancel();
+    if (m_autoCommand != null) {
+      m_autoCommand.cancel();
     }
   }
 

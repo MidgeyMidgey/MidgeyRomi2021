@@ -8,13 +8,15 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.RomiDrivetrain;
+import frc.robot.subsystems.LimelightSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.TankDriveCommand;
 import frc.robot.commands.TurnToAngleCommand;
 
 public class RobotContainer {
-  public final static RomiDrivetrain m_romiDrivetrain = new RomiDrivetrain();
+  public final RomiDrivetrain m_romiDrivetrain = new RomiDrivetrain();
+  public final LimelightSubsystem m_limelight = new LimelightSubsystem();
   final XboxController m_controller = new XboxController(0);
 
   private static final int A_BUTTON_XBOX = 1;
