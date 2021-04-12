@@ -13,8 +13,6 @@ import frc.robot.subsystems.RomiDrivetrain;
 import edu.wpi.first.wpilibj.DigitalOutput;
 
 public class DriveDistanceCommand extends CommandBase {
-    private static final DigitalOutput m_rsl = new DigitalOutput(8);
-
     private final RomiDrivetrain m_driveSubsystem;
     private final double m_distance;
     private final double m_speed;
@@ -26,7 +24,6 @@ public class DriveDistanceCommand extends CommandBase {
       m_speed = speed;
       m_driveSubsystem = drive;
       addRequirements(m_driveSubsystem);
-      //m_rsl.set(true);
     }
 
     @Override
@@ -42,7 +39,6 @@ public class DriveDistanceCommand extends CommandBase {
     @Override
     public void end(boolean interrupted) {
       m_driveSubsystem.tankDrive(0.0, 0.0);
-      m_rsl.set(false);
     }
 
     @Override

@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.RomiDrivetrain;
 import edu.wpi.first.wpiutil.math.MathUtil;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class TurnToAngleCommand extends CommandBase {
   RomiDrivetrain m_drive;
@@ -15,9 +16,9 @@ public class TurnToAngleCommand extends CommandBase {
   double rightSpeed = 0;
 
   // what is our angle change each time through?
-  double lastAngle = 0;
+  double startAngle = 0;
   double delta_sum = 0;
-  int delta_count = 0;
+  int deltaCount = 0;
 
   public TurnToAngleCommand(RomiDrivetrain drive) {
     m_drive = drive;
@@ -26,44 +27,41 @@ public class TurnToAngleCommand extends CommandBase {
 
   @Override
   public void initialize() {
-    m_drive.resetGyro();
-    lastAngle = 0.0;
-    System.out.println("**** RESET");
+    startAngle = m_drive.getAngleZ();
   }
 
   @Override
   public void execute() {
-    double currentAngle = m_drive.getAngleZ();
+    double currentAngle = m_drive.getAngleZ() - startAngle;
     double delta = Math.abs(Constants.TARGET_ANGLE - currentAngle);
-    delta = delta * 0.01 + 0.26;
+    delta = delta * 0.04 + 0.5;
+ 
     delta = Math.min(delta, Constants.K_TURN);
-    if (currentAngle > Constants.TARGET_ANGLE) {
+   
+    if (currentAngle < Constants.TARGET_ANGLE) {
       leftSpeed = delta;
       rightSpeed = - delta;
     } else {
       leftSpeed = - delta;
       rightSpeed = delta;
     }
-    delta_count++;
-    delta_sum += currentAngle - lastAngle;
-    lastAngle = currentAngle;
-    m_drive.tankDrive(-leftSpeed, rightSpeed);
+    m_drive.tankDrive(leftSpeed, rightSpeed);
+    SmartDashboard.putNumber("AngleDelta", delta);
   }
 
   @Override
   public void end(boolean interrupted) {
     m_drive.tankDrive(0, 0);
     System.out.println("**** DONE TURN");
-    System.out.println(delta_count/delta_sum);
   }
 
   @Override
   public boolean isFinished() {
-    double theta = m_drive.getAngleZ();
-    boolean isDone = Math.abs(Constants.TARGET_ANGLE - theta) < 0.7;
+    double currentAngle = m_drive.getAngleZ() - startAngle;
+    boolean isDone = Math.abs(Constants.TARGET_ANGLE - currentAngle) < 0.5;
     if (isDone) {
       System.out.println("**** At angle");
-      System.out.println(theta);
+      System.out.println(currentAngle);
     }
     return isDone;
   }

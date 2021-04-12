@@ -29,19 +29,24 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+    m_robotContainer.m_rsl.setInterval(0.0);
+  }
 
   @Override
   public void disabledPeriodic() {}
 
   @Override
   public void autonomousInit() {
-    m_autoCommand = getAutoCommand();
-    System.out.println(m_autoCommand.toString());
-    if(m_autoCommand != null){
+    // Get selected routine from the SmartDashboard
+    m_autoCommand = m_robotContainer.getAutonomousCommand();
+
+    if (m_autoCommand != null) {
       m_autoCommand.schedule();
       SmartDashboard.putString("temp1", "Auto init working");
     }
+
+    m_robotContainer.m_rsl.setInterval(0.8); // slow blink
   }
 
   @Override
@@ -52,18 +57,21 @@ public class Robot extends TimedRobot {
     if (m_autoCommand != null) {
       m_autoCommand.cancel();
     }
+    m_robotContainer.m_rsl.setInterval(0.4); // regular blink
   }
 
   @Override
   public void teleopPeriodic() {
-    m_robotContainer.setSmartDashboard();
   }
 
   @Override
   public void testInit() {
     CommandScheduler.getInstance().cancelAll();
+    m_robotContainer.m_rsl.setInterval(0.25); // fastest blink
   }
 
   @Override
-  public void testPeriodic() {}
+  public void testPeriodic() {
+    m_robotContainer.m_rsl.periodic(); // not called otherwise?
+  }
 }

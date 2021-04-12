@@ -7,17 +7,27 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.robot.subsystems.RomiDrivetrain;
 import frc.robot.subsystems.LimelightSubsystem;
+import frc.robot.subsystems.RSL;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.AutoBaselineCommand;
+import frc.robot.commands.AutoTriangleCommand;
+import frc.robot.commands.ArcadeDriveCommand;
 import frc.robot.commands.TankDriveCommand;
 import frc.robot.commands.TurnToAngleCommand;
+import frc.robot.commands.TurnDegrees;
+import frc.robot.commands.DriveDistanceCommand;
 
 public class RobotContainer {
   public final RomiDrivetrain m_romiDrivetrain = new RomiDrivetrain();
   public final LimelightSubsystem m_limelight = new LimelightSubsystem();
-  final XboxController m_controller = new XboxController(0);
+  public final RSL m_rsl = new RSL();
+
+  // final XboxController m_controller = new XboxController(0);
+  final Joystick m_controller = new Joystick(0);
 
   private static final int A_BUTTON_XBOX = 1;
   private static final int B_BUTTON_XBOX = 2;
@@ -30,29 +40,42 @@ public class RobotContainer {
   private static final int JOYSTICK_LEFT_CLICK = 9;
   private static final int JOYSTICK_RIGHT_CLICK = 10;
 
+  // Create SmartDashboard chooser for autonomous routines
+  private final SendableChooser<Command> m_chooser = new SendableChooser<>();
+
   public RobotContainer() {
     configureButtonBindings();
   }
 
   private void configureButtonBindings() {
-    m_romiDrivetrain.setDefaultCommand(getTankDriveCommand());
+    // m_romiDrivetrain.setDefaultCommand(getTankDriveCommand());
+    m_romiDrivetrain.setDefaultCommand(getArcadeDriveCommand());
 
-    JoystickButton turnToAngleCommandButton = new JoystickButton(m_controller, X_BUTTON_XBOX);
+    // Setup SmartDashboard auto command chooser
+    m_chooser.setDefaultOption("Auto AutoBaseline", new AutoBaselineCommand(m_romiDrivetrain, m_limelight));
+    m_chooser.addOption("Auto Triangle", new AutoTriangleCommand(m_romiDrivetrain));
+    m_chooser.addOption("Auto TurnToAngle", new TurnToAngleCommand(m_romiDrivetrain));
+    m_chooser.addOption("Auto TurnDegrees", new TurnDegrees(0.6 , 120, m_romiDrivetrain));
+    m_chooser.addOption("Auto DriveDistance", new DriveDistanceCommand(24, 0.5, m_romiDrivetrain));
+    SmartDashboard.putData(m_chooser);
+
+    JoystickButton turnToAngleCommandButton = new JoystickButton(m_controller, A_BUTTON_XBOX);
     turnToAngleCommandButton.whenPressed(new TurnToAngleCommand(m_romiDrivetrain));
   }
 
-  /*
   public Command getAutonomousCommand() {
-    return m_autoCommand;
+    return m_chooser.getSelected();
   }
-  */
 
   public Command getTankDriveCommand(){
     return new TankDriveCommand(m_romiDrivetrain, () -> -m_controller.getRawAxis(1), () -> m_controller.getRawAxis(5));
   }
 
-  public void setSmartDashboard(){
-    SmartDashboard.putNumber("Left Encoder", m_romiDrivetrain.getLeftDistanceInch());
-    SmartDashboard.putNumber("Right Encoder", m_romiDrivetrain.getRightDistanceInch());
+  public Command getArcadeDriveCommand() {
+    return new ArcadeDriveCommand(
+        m_romiDrivetrain, () -> -m_controller.getRawAxis(1), () -> m_controller.getRawAxis(2));
+  }
+
+  public void setSmartDashboard() {
   }
 }
