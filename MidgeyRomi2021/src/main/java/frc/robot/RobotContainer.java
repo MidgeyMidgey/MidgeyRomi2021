@@ -14,9 +14,11 @@ import frc.robot.subsystems.RSL;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.AutoBaselineCommand;
+import frc.robot.commands.AutoTriangleCommand;
 import frc.robot.commands.ArcadeDriveCommand;
 import frc.robot.commands.TankDriveCommand;
 import frc.robot.commands.TurnToAngleCommand;
+import frc.robot.commands.TurnDegrees;
 import frc.robot.commands.DriveDistanceCommand;
 
 public class RobotContainer {
@@ -51,8 +53,10 @@ public class RobotContainer {
 
     // Setup SmartDashboard auto command chooser
     m_chooser.setDefaultOption("Auto AutoBaseline", new AutoBaselineCommand(m_romiDrivetrain, m_limelight));
+    m_chooser.addOption("Auto Triangle", new AutoTriangleCommand(m_romiDrivetrain));
     m_chooser.addOption("Auto TurnToAngle", new TurnToAngleCommand(m_romiDrivetrain));
-    m_chooser.addOption("Auto DriveDistance", new DriveDistanceCommand(2, 0.5, m_romiDrivetrain));
+    m_chooser.addOption("Auto TurnDegrees", new TurnDegrees(0.6 , 120, m_romiDrivetrain));
+    m_chooser.addOption("Auto DriveDistance", new DriveDistanceCommand(24, 0.5, m_romiDrivetrain));
     SmartDashboard.putData(m_chooser);
 
     JoystickButton turnToAngleCommandButton = new JoystickButton(m_controller, A_BUTTON_XBOX);
@@ -72,8 +76,6 @@ public class RobotContainer {
         m_romiDrivetrain, () -> -m_controller.getRawAxis(1), () -> m_controller.getRawAxis(2));
   }
 
-  public void setSmartDashboard(){
-    // SmartDashboard.putNumber("Left Encoder", m_romiDrivetrain.getLeftDistanceInch());
-    // SmartDashboard.putNumber("Right Encoder", m_romiDrivetrain.getRightDistanceInch());
+  public void setSmartDashboard() {
   }
 }

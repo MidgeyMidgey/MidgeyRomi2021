@@ -98,7 +98,14 @@ public class RomiDrivetrain extends SubsystemBase {
 		      m_leftEncoder.getDistance(),
 		      m_rightEncoder.getDistance());
     m_field.setRobotPose(m_odometry.getPoseMeters());
-    SmartDashboard.putNumber("Angle Z", m_romiGyro.getAngleZ());
+
+    SmartDashboard.putNumber("LeftEncoder", getLeftDistanceInch());
+    SmartDashboard.putNumber("RightEncoder", getRightDistanceInch());
+    SmartDashboard.putNumber("AccelX", getAccelX());
+    SmartDashboard.putNumber("AccelY", getAccelY());
+    SmartDashboard.putNumber("AccelZ", getAccelZ());
+    SmartDashboard.putNumber("AngleZ", getAngleZ());
+ 
   }
 
   @Override
